@@ -1,8 +1,16 @@
+require('dotenv').config({ path: '.env.local' });
 const mongoose = require('mongoose');
 const dns = require('node:dns');
+
+// Force use of Google DNS to resolve MongoDB Atlas SRV records
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
-const uri = "mongodb://seemaparveen600_db_user:WOPXE6SFULOvHN4Q@ac-14nws9z-shard-00-00.dvlu6rq.mongodb.net:27017,ac-14nws9z-shard-00-01.dvlu6rq.mongodb.net:27017,ac-14nws9z-shard-00-02.dvlu6rq.mongodb.net:27017/carads?ssl=true&replicaSet=atlas-jcbo5s-shard-0&authSource=admin&appName=AutoAds";
+const uri = process.env.MONGODB_URI;
+
+if (!uri) {
+    console.error("FAILURE: MONGODB_URI is not defined in .env.local");
+    process.exit(1);
+}
 
 console.log("Connecting using Standard Connection String...");
 
