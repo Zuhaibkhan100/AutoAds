@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Car Ads Next.js MVP 🚗
 
 ## Quick Start
@@ -22,3 +23,7 @@
 ## Phase 3 Integration (Pending Setup by you):
 * MongoDB & Mongoose schemas are conceptualized (Mongoose included in `package.json`).
 * Connect via `/api/leads` and `/api/campaigns` files once Atlas URI is ready.
+=======
+# AutoAds
+Marketing and Advertising Project
+>>>>>>> 1d7bf819d5cbe179ff45c93fc74504c2366608d0
