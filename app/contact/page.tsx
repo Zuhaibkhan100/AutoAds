@@ -63,7 +63,7 @@ function ContactForm() {
                     body: JSON.stringify({ 
                         type: 'submission', 
                         package: searchParams.get('package') || 'custom',
-                        wrapType: quoteData.wrapType || undefined,
+                        wrapType: quoteData.carType || undefined,
                         carsCount: quoteData.cars || undefined,
                         userName: formData.name,
                         phoneNumber: formData.phone,
