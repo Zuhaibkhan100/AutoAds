@@ -108,7 +108,7 @@ function ContactForm() {
                                 <div className="grid grid-cols-2 gap-4 text-sm mt-2">
                                     <div>
                                         <p className="text-gray-500 text-xs">Wrap & Scale</p>
-                                        <p className="text-white font-medium">{quoteData.wrapType} • {quoteData.cars} Cars</p>
+                                        <p className="text-white font-medium">{quoteData.carType} • {quoteData.cars} Cars</p>
                                     </div>
                                     <div className="text-right">
                                         <p className="text-gray-500 text-xs">Price Estimate</p>
