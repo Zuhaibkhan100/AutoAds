@@ -6,7 +6,7 @@ import { Mail, Phone, MapPin, Send, CheckCircle2, ShoppingBag, ArrowRight } from
 
 function ContactForm() {
     const searchParams = useSearchParams();
-    
+
     // Extract quote data from search params if present
     const quoteData = {
         carType: searchParams.get('carType') || '',
@@ -29,7 +29,7 @@ function ContactForm() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         // Generate WhatsApp Message
         const phoneNumber = '919454420712';
         let messageText = `🚀 *New Campaign Inquiry - AutoAds*\n\n`;
@@ -38,7 +38,7 @@ function ContactForm() {
         messageText += `🏢 Business: ${formData.businessType}\n`;
         messageText += `💰 Budget: ${formData.budget}\n`;
         messageText += `📞 Phone: ${formData.phone}\n`;
-        
+
         if (isQuoteFlow) {
             messageText += `\n*📊 Campaign Configuration:*\n`;
             messageText += `🚗 Vehicle: ${quoteData.carType === '3-wheeler' ? '3 Wheeler (Auto)' : '4 Wheeler (Car/SUV)'}\n`;
@@ -60,10 +60,10 @@ function ContactForm() {
                 await fetch('/api/analytics', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        type: 'submission', 
+                    body: JSON.stringify({
+                        type: 'submission',
                         package: searchParams.get('package') || 'custom',
-                        wrapType: quoteData.carType || undefined,
+                        carType: quoteData.carType || undefined,
                         carsCount: quoteData.cars || undefined,
                         userName: formData.name,
                         phoneNumber: formData.phone,
@@ -77,7 +77,7 @@ function ContactForm() {
 
         setSubmitted(true);
         logSubmission();
-        
+
         // Redirect to WhatsApp after a short delay to show success state
         setTimeout(() => {
             window.open(whatsappUrl, '_blank');
@@ -89,7 +89,7 @@ function ContactForm() {
             <div className="bg-black border border-gray-800 rounded-3xl p-8 md:p-12 shadow-2xl relative z-10 overflow-hidden">
                 {/* Visual accent */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-                
+
                 {submitted ? (
                     <div className="text-center py-16 animate-in zoom-in duration-500">
                         <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
