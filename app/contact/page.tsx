@@ -239,8 +239,8 @@ function ContactForm() {
                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                         <ShoppingBag className="w-16 h-16 text-accent" />
                     </div>
-                    <h4 className="font-bold text-white mb-2">Fast Response Guarantee</h4>
-                    <p className="text-gray-400 text-sm">We process all inquiries within 24 hours. Connect on WhatsApp for fastest response!</p>
+                    <h4 className="font-bold text-white mb-2">Texts of Assurity</h4>
+                    <p className="text-gray-400 text-sm">Texts of Assurity.</p>
                 </div>
             </div>
         </div>

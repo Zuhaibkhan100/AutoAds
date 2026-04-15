@@ -52,8 +52,12 @@ export default function Footer() {
                                 <p className="text-gray-500 text-xs">Co-Founder</p>
                             </li>
                             <li>
-                                <p className="text-white font-medium">Suyash</p>
+                                <p className="text-white font-medium">Suyash Trivedi</p>
                                 <p className="text-gray-500 text-xs">Co-Founder</p>
+                            </li>
+                            <li>
+                                <p className="text-white font-medium">Harshit Pawar</p>
+                                <p className="text-gray-500 text-xs">Media Manager</p>
                             </li>
                             <li>
                                 <p className="text-white font-medium">Zuhaib Khan</p>

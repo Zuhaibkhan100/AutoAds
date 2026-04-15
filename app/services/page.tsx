@@ -17,7 +17,7 @@ export default function Services() {
                     </span>
                     <h1 className="text-5xl md:text-7xl font-poppins font-black text-white mb-6">Our <span className="text-accent underline decoration-accent/20 underline-offset-8">Services</span></h1>
                     <p className="text-xl text-gray-400 max-w-3xl mx-auto font-medium">
-                        Choose the level of branding that best fits your marketing goals and budget. High-quality wrapping guaranteed.
+                        Choose the level of branding that best fits your marketing goals and budget. Texts of Assurity.
                     </p>
                 </div>
 
@@ -94,7 +94,7 @@ export default function Services() {
                         </div>
                         <h2 className="text-4xl font-black text-white mb-6">Starting in <span className="text-accent italic">Lucknow</span></h2>
                         <p className="text-gray-400 max-w-2xl mx-auto mb-10 text-lg leading-relaxed">
-                            We are currently covering key areas across Lucknow including <span className="text-white font-bold">Gomti Nagar</span>, <span className="text-white font-bold">Hazratganj</span>, and <span className="text-white font-bold">Alambagh</span>, guaranteeing your ads are seen in the most vibrant parts of the city.
+                            We are currently covering key areas across Lucknow including <span className="text-white font-bold">Gomti Nagar</span>, <span className="text-white font-bold">Hazratganj</span>, and <span className="text-white font-bold">Alambagh</span>. Texts of Assurity.
                         </p>
                         <Link href="/contact" className="inline-flex items-center justify-center px-10 py-5 text-lg font-black rounded-2xl text-primary bg-accent hover:bg-yellow-400 transition-all shadow-2xl shadow-accent/20 hover:-translate-y-1 active:scale-95">
                             Check Availability <ArrowRight className="ml-2 w-5 h-5" />
