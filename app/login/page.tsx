@@ -15,161 +15,16 @@ export default function LoginPage() {
     const { login } = useAuth();
     const router = useRouter();
 
-    const canvasRef = useRef<HTMLCanvasElement>(null);
     const timeRef = useRef<HTMLDivElement>(null);
     const dateRef = useRef<HTMLDivElement>(null);
 
-    // Canvas Watch Animation Logic
+    // Digital Clock Logic
     useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        let dpr = 1;
-        let animationId: number;
-
-        const resize = () => {
-            dpr = window.devicePixelRatio || 1;
-            canvas.width = window.innerWidth * dpr;
-            canvas.height = window.innerHeight * dpr;
-        };
-
-        resize();
-        window.addEventListener('resize', resize);
-
-        const isVisible = (angleDeg: number) => {
-            const n = ((angleDeg % 360) + 360) % 360;
-            return n >= 90 && n <= 270;
-        };
-
-        const drawHand = (cx: number, cy: number, angle: number, length: number, width: number, color: string) => {
-            const x = cx + Math.cos(angle) * length;
-            const y = cy + Math.sin(angle) * length;
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(x, y);
-            ctx.strokeStyle = color;
-            ctx.lineWidth = width;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-        };
-
-        const ACCENT = '#FFD60A'; // Modified to match website theme
-
-        const draw = () => {
-            const w = window.innerWidth;
-            const h = window.innerHeight;
-            const cx = w;
-            const cy = h / 2;
-            const r = h / 2;
-
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            ctx.clearRect(0, 0, w, h);
-
-            const glow = ctx.createRadialGradient(cx, cy, r * 0.1, cx, cy, r * 1.1);
-            glow.addColorStop(0, 'rgba(255,214,10,0.03)');
-            glow.addColorStop(0.5, 'rgba(255,214,10,0.01)');
-            glow.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = glow;
-            ctx.fillRect(0, 0, w, h);
-
-            ctx.beginPath();
-            ctx.arc(cx, cy, r - 2, Math.PI * 0.5, Math.PI * 1.5);
-            ctx.closePath();
-            const faceGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-            faceGrad.addColorStop(0, 'rgba(255,255,255,0.015)');
-            faceGrad.addColorStop(1, 'rgba(255,255,255,0.003)');
-            ctx.fillStyle = faceGrad;
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(cx, cy, r - 1, Math.PI * 0.5, Math.PI * 1.5);
-            ctx.strokeStyle = 'rgba(255,255,255,0.14)';
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.arc(cx, cy, r - 28, Math.PI * 0.5, Math.PI * 1.5);
-            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-
-            for (let i = 0; i < 60; i++) {
-                if (i % 5 === 0) continue;
-                const aDeg = i * 6 - 90;
-                if (!isVisible(aDeg)) continue;
-
-                const a = aDeg * Math.PI / 180;
-                const o = r - 12;
-                const inner = r - 18;
-                ctx.beginPath();
-                ctx.moveTo(cx + Math.cos(a) * o, cy + Math.sin(a) * o);
-                ctx.lineTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner);
-                ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
-            }
-
-            for (let i = 0; i < 12; i++) {
-                const aDeg = i * 30 - 90;
-                if (!isVisible(aDeg)) continue;
-
-                const a = aDeg * Math.PI / 180;
-                const main = i % 3 === 0;
-                const o = r - 10;
-                const inner = main ? r - 48 : r - 32;
-
-                ctx.beginPath();
-                ctx.moveTo(cx + Math.cos(a) * o, cy + Math.sin(a) * o);
-                ctx.lineTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner);
-                ctx.strokeStyle = main ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.2)';
-                ctx.lineWidth = main ? 2.5 : 1;
-                ctx.lineCap = 'round';
-                ctx.stroke();
-            }
-
+        const updateTime = () => {
             const now = new Date();
-            const hrs = now.getHours() % 12;
             const min = now.getMinutes();
             const sec = now.getSeconds();
-            const ms = now.getMilliseconds();
-
-            const sSmooth = sec + ms / 1000;
-            const mSmooth = min + sSmooth / 60;
-            const hSmooth = hrs + mSmooth / 60;
-
-            const secArcStart = Math.PI * 0.5;
-            const secArcEnd = secArcStart + (sSmooth / 60) * Math.PI * 2;
-            ctx.beginPath();
-            ctx.arc(cx, cy, r - 5, secArcStart, secArcEnd);
-            ctx.strokeStyle = 'rgba(255,214,10,0.15)';
-            ctx.lineWidth = 1.5;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-
-            const hAngle = (hSmooth * 30 - 90) * Math.PI / 180;
-            drawHand(cx, cy, hAngle, r * 0.42, 3.2, 'rgba(255,255,255,0.82)');
-
-            const mAngle = (mSmooth * 6 - 90) * Math.PI / 180;
-            drawHand(cx, cy, mAngle, r * 0.62, 1.8, 'rgba(255,255,255,0.58)');
-
-            const sAngle = (sSmooth * 6 - 90) * Math.PI / 180;
-            drawHand(cx, cy, sAngle + Math.PI, r * 0.13, 0.9, ACCENT);
-            drawHand(cx, cy, sAngle, r * 0.7, 0.9, ACCENT);
-
-            ctx.beginPath();
-            ctx.arc(cx, cy, 4.5, 0, Math.PI * 2);
-            ctx.fillStyle = ACCENT;
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(cx, cy, 1.8, 0, Math.PI * 2);
-            ctx.fillStyle = '#fff';
-            ctx.fill();
-
-            const pad = (n: number) => String(n).padStart(2, '0');
+            const pad = (n) => String(n).padStart(2, '0');
             if (timeRef.current) {
                 timeRef.current.textContent = `${pad(now.getHours())}:${pad(min)}:${pad(sec)}`;
             }
@@ -178,16 +33,10 @@ export default function LoginPage() {
                     weekday: 'long', month: 'long', day: 'numeric'
                 });
             }
-
-            animationId = requestAnimationFrame(draw);
         };
-
-        draw();
-
-        return () => {
-            window.removeEventListener('resize', resize);
-            cancelAnimationFrame(animationId);
-        };
+        updateTime();
+        const intervalId = setInterval(updateTime, 1000);
+        return () => clearInterval(intervalId);
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -217,9 +66,22 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#060606] text-white font-['DM_Sans',_sans-serif] overflow-hidden relative flex items-center">
-            {/* Watch Background */}
-            <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full pointer-events-none" />
+        <div className="min-h-screen bg-[#060606] text-white font-['DM_Sans',_sans-serif] overflow-hidden relative flex items-center justify-center">
+            {/* Background Video */}
+            <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="fixed inset-0 w-full h-full object-cover scale-105 pointer-events-none z-0"
+            >
+                <source src="/ink_plumes.mp4" type="video/mp4" />
+            </video>
+            
+            {/* Dark Overlays to ensure text/canvas readability */}
+            <div className="fixed inset-0 bg-black/40 mix-blend-multiply pointer-events-none z-0"></div>
+            <div className="fixed inset-0 bg-gradient-to-r from-black/55 via-transparent to-black/35 pointer-events-none z-0"></div>
+
 
             <div className="fixed left-14 top-14 z-10 pointer-events-none">
                 <span className="text-[11px] font-light text-white/20 uppercase tracking-[6px]">Auto Ads</span>
@@ -235,11 +97,26 @@ export default function LoginPage() {
             <div className="relative z-20 w-full max-w-7xl mx-auto px-14 flex items-center justify-center pointer-events-none">
                 <div className="w-full max-w-md pointer-events-auto">
                     {/* Transparent Login Card */}
-                    <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-[2.5rem] p-10 shadow-[0_40px_100px_rgba(0,0,0,0.4)] relative overflow-hidden group">
-                        {/* Interactive border glow */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                    <div className="bg-transparent border border-white/20 rounded-[2.5rem] p-10 shadow-[0_40px_100px_rgba(0,0,0,0.5)] relative overflow-hidden group/card pointer-events-auto">
+                        {/* Magnifying/Zoomed Background Video */}
+                        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                            <video 
+                                autoPlay 
+                                loop 
+                                muted 
+                                playsInline 
+                                className="absolute inset-0 w-full h-full object-cover scale-[1.3] opacity-80"
+                            >
+                                <source src="/ink_plumes.mp4" type="video/mp4" />
+                            </video>
+                            {/* Dark overlay specifically inside the card to keep text highly readable */}
+                            <div className="absolute inset-0 bg-black/45"></div>
+                        </div>
 
-                        <div className="relative">
+                        {/* Interactive border glow */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-accent/5 opacity-0 group-hover/card:opacity-100 transition-opacity duration-1000 z-[1]"></div>
+
+                        <div className="relative z-10">
                             <div className="flex flex-col items-center mb-10">
                                 <img src={brandNameImg.src} alt="Auto Ads Logo" className="h-14 w-auto mb-6 opacity-90" />
                                 <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">Login</h2>

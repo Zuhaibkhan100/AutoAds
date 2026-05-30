@@ -70,48 +70,50 @@ export default function Pricing() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
                     {[
-                        { id: '1month', name: '1 Month', subtitle: 'Short term trial', desc: 'Campaign', items: ['Short Campaign', 'High Impact', 'Basic reporting'] },
-                        { id: '3months', name: '3 Months', subtitle: 'Quarterly push', desc: 'Sub', items: ['Quarterly Presence', 'Extended Reach', 'Regular Reporting'] },
-                        { id: '6months', name: '6 Months', subtitle: 'Half-yearly coverage', desc: 'Sub', items: ['Strong Presence', 'City Zones Coverage', 'Detailed Insights'] },
-                        { id: 'yearly', name: 'Yearly', subtitle: 'Annual commitment', desc: 'Sub', items: ['Complete Dominance', 'Maximum Impact', 'Dedicated Dashboard'] },
+                        { id: '1month', name: '1 Month', subtitle: 'Short term trial', desc: 'Campaign', items: ['Short Campaign', 'High Impact', 'Basic reporting'], glow: 'from-blue-600/40' },
+                        { id: '3months', name: '3 Months', subtitle: 'Quarterly push', desc: 'Sub', items: ['Quarterly Presence', 'Extended Reach', 'Regular Reporting'], glow: 'from-purple-600/40' },
+                        { id: '6months', name: '6 Months', subtitle: 'Half-yearly coverage', desc: 'Sub', items: ['Strong Presence', 'City Zones Coverage', 'Detailed Insights'], glow: 'from-accent/40' },
+                        { id: 'yearly', name: 'Yearly', subtitle: 'Annual commitment', desc: 'Sub', items: ['Complete Dominance', 'Maximum Impact', 'Dedicated Dashboard'], glow: 'from-green-600/40' },
                     ].map((plan, idx) => (
                         <div 
                             key={plan.id}
-                            className="group bg-gradient-to-br from-gray-900/50 to-black border border-gray-800 hover:border-accent/50 rounded-[2.5rem] p-8 transition-all duration-500 hover:-translate-y-4 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4),0_0_20px_rgba(255,214,10,0.05)] flex flex-col relative overflow-hidden"
+                            className="glass-panel group relative overflow-hidden flex flex-col transition-all duration-700 hover:-translate-y-4 hover:shadow-[0_0_40px_rgba(255,214,10,0.15)] h-[32rem] border border-white/5 hover:border-white/20"
                             style={{ animationDelay: `${idx * 100}ms` }}
                         >
-                            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                                <ArrowRight className="w-16 h-16 -rotate-45" />
-                            </div>
-                            
-                            <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-accent transition-colors">{plan.name}</h3>
-                            <p className="text-gray-400 text-sm mb-6">{plan.subtitle}</p>
-                            
-                            <div className="mb-8">
-                                <span className="text-3xl font-black font-poppins text-white">{plan.name}</span>
-                                <span className="text-xl text-gray-500 ml-2">{plan.desc}</span>
-                            </div>
+                            {/* Fluid Base Effect */}
+                            <div className={`absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t ${plan.glow} via-transparent to-transparent opacity-30 group-hover:opacity-100 transition-opacity duration-700 blur-2xl z-0 pointer-events-none`}></div>
+                            <div className="absolute -bottom-20 -right-20 w-48 h-48 bg-white/5 rounded-full blur-[40px] group-hover:scale-150 transition-transform duration-1000 z-0 pointer-events-none"></div>
 
-                            <ul className="space-y-4 mb-8 flex-grow">
-                                {plan.items.map((item, i) => (
-                                    <li key={i} className="flex items-start text-gray-300 group-hover:text-gray-200 transition-colors">
-                                        <div className="mr-3 mt-1 bg-accent/10 p-1 rounded-full group-hover:bg-accent/20 transition-colors">
-                                            <Check className="w-4 h-4 text-accent" />
-                                        </div>
-                                        <span className="text-sm font-medium">{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
+                            <div className="relative z-10 flex-grow p-8 flex flex-col">
+                                <div className="flex justify-between items-start mb-6">
+                                    <div>
+                                        <h3 className="text-3xl font-bold text-white mb-1 font-poppins">{plan.name}</h3>
+                                        <p className="text-gray-400 text-[10px] font-black tracking-widest uppercase">{plan.subtitle}</p>
+                                    </div>
+                                    <div className="text-sm font-black text-white/30 group-hover:text-white/80 transition-colors">.0{idx + 1}</div>
+                                </div>
+                                
+                                <ul className="space-y-4 mb-8 flex-grow mt-auto pt-8">
+                                    {plan.items.map((item, i) => (
+                                        <li key={i} className="flex items-start text-gray-300 group-hover:text-white transition-colors">
+                                            <div className="mr-3 mt-1 bg-white/5 p-1 rounded-full border border-white/10 group-hover:border-accent/50 transition-colors">
+                                                <Check className="w-3 h-3 text-white group-hover:text-accent" />
+                                            </div>
+                                            <span className="text-sm font-medium">{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
 
-                            <button
-                                onClick={(e) => handleQuoteClick(e as any, plan.id)}
-                                className="w-full relative overflow-hidden group/btn py-4 bg-gray-900 hover:bg-accent border border-gray-800 hover:border-accent rounded-2xl font-bold text-white hover:text-primary transition-all duration-300 shadow-lg active:scale-95 flex items-center justify-center gap-2"
-                            >
-                                Get Quote
-                                <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
-                            </button>
+                                <button
+                                    onClick={(e) => handleQuoteClick(e as any, plan.id)}
+                                    className="w-full relative overflow-hidden group/btn py-4 bg-black/40 hover:bg-white backdrop-blur-md border border-white/10 hover:border-white rounded-2xl font-bold text-white hover:text-black transition-all duration-300 shadow-lg active:scale-95 flex items-center justify-center gap-2 mt-auto"
+                                >
+                                    Get Quote
+                                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>

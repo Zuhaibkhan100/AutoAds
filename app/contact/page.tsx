@@ -2,12 +2,11 @@
 
 import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Mail, Phone, MapPin, Send, CheckCircle2, ShoppingBag, ArrowRight } from 'lucide-react';
+import { CheckCircle2, ArrowRight } from 'lucide-react';
 
 function ContactForm() {
     const searchParams = useSearchParams();
 
-    // Extract quote data from search params if present
     const quoteData = {
         carType: searchParams.get('carType') || '',
         cars: searchParams.get('cars') || '',
@@ -30,7 +29,6 @@ function ContactForm() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Generate WhatsApp Message
         const phoneNumber = '919454420712';
         let messageText = `🚀 *New Campaign Inquiry - AutoAds*\n\n`;
         messageText += `*Client Information:*\n`;
@@ -78,191 +76,157 @@ function ContactForm() {
         setSubmitted(true);
         logSubmission();
 
-        // Redirect to WhatsApp after a short delay to show success state
         setTimeout(() => {
             window.open(whatsappUrl, '_blank');
         }, 1500);
     };
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <div className="bg-black border border-gray-800 rounded-3xl p-8 md:p-12 shadow-2xl relative z-10 overflow-hidden">
-                {/* Visual accent */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-
-                {submitted ? (
-                    <div className="text-center py-16 animate-in zoom-in duration-500">
-                        <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <CheckCircle2 className="w-10 h-10" />
-                        </div>
-                        <h3 className="text-2xl font-bold text-white mb-4">Redirecting to WhatsApp...</h3>
-                        <p className="text-gray-400">Please wait while we open your chat with our campaign strategist.</p>
-                    </div>
-                ) : (
-                    <>
-                        {isQuoteFlow && (
-                            <div className="mb-10 p-6 bg-accent/10 border border-accent/20 rounded-2xl relative">
-                                <span className="absolute -top-3 left-6 px-3 py-1 bg-accent text-primary text-[10px] font-black rounded-full uppercase tracking-widest flex items-center">
-                                    <ShoppingBag className="w-3 h-3 mr-1" /> Selected Quote
-                                </span>
-                                <div className="grid grid-cols-2 gap-4 text-sm mt-2">
-                                    <div>
-                                        <p className="text-gray-500 text-xs">Wrap & Scale</p>
-                                        <p className="text-white font-medium">{quoteData.carType} • {quoteData.cars} Cars</p>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="text-gray-500 text-xs">Price Estimate</p>
-                                        <p className="text-accent font-bold text-xs uppercase tracking-wider">To be discussed</p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-2">Your Name</label>
-                                    <input
-                                        required
-                                        type="text"
-                                        className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors"
-                                        placeholder="John Doe"
-                                        value={formData.name}
-                                        onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-2">WhatsApp Number</label>
-                                    <input
-                                        required
-                                        type="tel"
-                                        className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors"
-                                        placeholder="+91 98765 43210"
-                                        value={formData.phone}
-                                        onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-2">Business Type</label>
-                                    <select
-                                        required
-                                        className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-accent transition-colors appearance-none"
-                                        value={formData.businessType}
-                                        onChange={e => setFormData({ ...formData, businessType: e.target.value })}
-                                    >
-                                        <option value="">Select an option</option>
-                                        <option value="Restaurant/Cafe">Restaurant / Cafe</option>
-                                        <option value="Startup">Startup / Tech</option>
-                                        <option value="Real Estate">Real Estate</option>
-                                        <option value="Healthcare">Healthcare / Clinic</option>
-                                        <option value="Education">Education Institute</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-2">Budget Range</label>
-                                    <input
-                                        required
-                                        type="text"
-                                        className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors"
-                                        placeholder="E.g. 50k/month"
-                                        value={formData.budget}
-                                        onChange={e => setFormData({ ...formData, budget: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-400 mb-2">Tell us about your campaign goals</label>
-                                <textarea
-                                    rows={4}
-                                    className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors resize-none"
-                                    placeholder="E.g., I want to increase footfall to my new cafe in Hazratganj..."
-                                    value={formData.message}
-                                    onChange={e => setFormData({ ...formData, message: e.target.value })}
-                                ></textarea>
-                            </div>
-
-                            <div className="pt-4">
-                                <button type="submit" className="w-full bg-accent text-primary font-bold text-lg py-4 rounded-xl hover:bg-yellow-400 transition-colors flex justify-center items-center group">
-                                    Send Request <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                </button>
-                                <p className="text-center text-[10px] text-gray-600 mt-4 uppercase tracking-[0.2em] font-bold">
-                                    Direct flow to WhatsApp Business
-                                </p>
-                            </div>
-                        </form>
-                    </>
-                )}
+        <div className="bg-transparent rounded-3xl p-6 border border-white/20 shadow-2xl relative overflow-hidden group/card">
+            {/* Magnifying/Zoomed Background Video */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                <video 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline 
+                    className="absolute inset-0 w-full h-full object-cover scale-[1.3] opacity-80"
+                >
+                    <source src="/ink_plumes.mp4" type="video/mp4" />
+                </video>
+                {/* Dark overlay specifically inside the card to keep text highly readable */}
+                <div className="absolute inset-0 bg-black/40"></div>
             </div>
 
-            <div className="flex flex-col justify-center space-y-12 lg:pl-10">
-                <div>
-                    <h3 className="text-2xl font-bold text-white mb-6">Direct Contact</h3>
-                    <div className="space-y-6">
-                        <a href="https://wa.me/919454420712" target="_blank" rel="noreferrer" className="flex items-start group">
-                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors text-xl">
-                                <Phone className="w-5 h-5" />
-                            </div>
-                            <div className="ml-4">
-                                <p className="text-lg font-medium text-white group-hover:text-green-500 transition-colors">WhatsApp Us</p>
-                                <p className="text-gray-400">+91 94544 20712</p>
-                            </div>
-                        </a>
-
-                        <a href="mailto:autoads.marketing@gmail.com" className="flex items-start group">
-                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                                <Mail className="w-5 h-5" />
-                            </div>
-                            <div className="ml-4">
-                                <p className="text-lg font-medium text-white group-hover:text-blue-500 transition-colors">Email Us</p>
-                                <p className="text-gray-400">autoads.marketing@gmail.com</p>
-                            </div>
-                        </a>
-
-                        <div className="flex items-start group">
-                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary transition-colors">
-                                <MapPin className="w-5 h-5" />
-                            </div>
-                            <div className="ml-4">
-                                <p className="text-lg font-medium text-white group-hover:text-accent transition-colors">Lucknow HQ</p>
-                                <p className="text-gray-400 break-words w-48">VikasNagar,Lucknow, UP 226024</p>
-                            </div>
+            {submitted ? (
+                <div className="text-center py-16 animate-in zoom-in duration-500 relative z-10">
+                    <CheckCircle2 className="w-16 h-16 text-accent mx-auto mb-4" />
+                    <h3 className="text-3xl font-black text-white font-poppins mb-2">Connecting...</h3>
+                    <p className="text-white/70">Redirecting to our strategy team.</p>
+                </div>
+            ) : (
+                <div className="relative z-10 animate-in fade-in duration-1000">
+                    <h2 className="text-2xl font-bold text-white mb-6">Start a Project</h2>
+                    
+                    {isQuoteFlow && (
+                        <div className="mb-6 p-4 bg-accent/5 rounded-xl border border-accent/20">
+                            <p className="text-[10px] text-accent font-bold uppercase tracking-widest mb-1">Active Quote Request</p>
+                            <p className="text-white font-medium text-sm">{quoteData.carType === '3-wheeler' ? '3 Wheeler (Auto)' : '4 Wheeler (Car/SUV)'} • {quoteData.cars} Cars</p>
                         </div>
-                    </div>
-                </div>
+                    )}
 
-                <div className="bg-gray-900 border border-gray-800 p-8 rounded-2xl relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <ShoppingBag className="w-16 h-16 text-accent" />
-                    </div>
-                    <h4 className="font-bold text-white mb-2">Texts of Assurity</h4>
-                    <p className="text-gray-400 text-sm">Texts of Assurity.</p>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <input 
+                                required 
+                                type="text" 
+                                placeholder="Name" 
+                                className="w-full bg-black/35 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/40 focus:bg-black/50 transition-all" 
+                                value={formData.name} 
+                                onChange={e => setFormData({ ...formData, name: e.target.value })} 
+                            />
+                            <input 
+                                required 
+                                type="tel" 
+                                placeholder="Phone" 
+                                className="w-full bg-black/35 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/40 focus:bg-black/50 transition-all" 
+                                value={formData.phone} 
+                                onChange={e => setFormData({ ...formData, phone: e.target.value })} 
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <select 
+                                required 
+                                className="w-full bg-black/35 border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 focus:outline-none focus:border-accent/40 focus:bg-black/50 transition-all appearance-none" 
+                                value={formData.businessType} 
+                                onChange={e => setFormData({ ...formData, businessType: e.target.value })}
+                            >
+                                <option value="" className="bg-gray-900">Industry</option>
+                                <option value="Restaurant" className="bg-gray-900">Restaurant</option>
+                                <option value="Startup" className="bg-gray-900">Startup</option>
+                                <option value="Real Estate" className="bg-gray-900">Real Estate</option>
+                                <option value="Other" className="bg-gray-900">Other</option>
+                            </select>
+                            <input 
+                                required 
+                                type="text" 
+                                placeholder="Budget" 
+                                className="w-full bg-black/35 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/40 focus:bg-black/50 transition-all" 
+                                value={formData.budget} 
+                                onChange={e => setFormData({ ...formData, budget: e.target.value })} 
+                            />
+                        </div>
+
+                        <textarea 
+                            rows={3} 
+                            placeholder="Message or Campaign Goals..." 
+                            className="w-full bg-black/35 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-accent/40 focus:bg-black/50 transition-all resize-none" 
+                            value={formData.message} 
+                            onChange={e => setFormData({ ...formData, message: e.target.value })}
+                        ></textarea>
+
+                        <button type="submit" className="w-full bg-accent text-primary font-black py-3.5 rounded-xl hover:bg-yellow-400 transition-colors flex justify-center items-center gap-2 mt-2 shadow-[0_10px_20px_rgba(255,214,10,0.15)] hover:shadow-[0_15px_30px_rgba(255,214,10,0.3)]">
+                            Send Request <ArrowRight className="w-4 h-4" />
+                        </button>
+                    </form>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
 
 export default function Contact() {
     return (
-        <div className="pt-20 pb-24 relative overflow-hidden">
-            <div className="absolute top-0 right-0 -mr-64 -mt-64 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="min-h-screen bg-primary p-4 md:p-8 flex items-center justify-center pt-28 pb-16 relative overflow-hidden">
+            {/* Ambient Background Glows */}
+            <div className="absolute inset-0 glow-mesh opacity-40 pointer-events-none"></div>
+            <div className="absolute top-1/4 left-1/4 w-[40vw] h-[40vw] bg-accent/5 rounded-full blur-[120px] pointer-events-none mix-blend-screen animate-pulse duration-[10s]"></div>
+            
+            {/* Massive inner container */}
+            <div className="relative w-full min-h-[calc(100vh-10rem)] lg:h-[calc(100vh-10rem)] rounded-[3rem] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)] border border-white/10 flex flex-col group z-10">
+                
+                {/* Background Video */}
+                <video 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline 
+                    className="absolute inset-0 w-full h-full object-cover scale-105 transition-transform duration-[20s] group-hover:scale-110"
+                >
+                    <source src="/ink_plumes.mp4" type="video/mp4" />
+                </video>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h1 className="text-5xl md:text-6xl font-poppins font-black text-white mb-6 animate-in slide-in-from-bottom-4">Let's Get Your Brand Moving</h1>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                        Fill out the form below to finalize your quote and connect with our team on WhatsApp.
-                    </p>
+                {/* Subtle Overlay to make text readable */}
+                <div className="absolute inset-0 bg-black/25 mix-blend-multiply"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/40"></div>
+
+                {/* Main Content Area */}
+                <div className="relative z-10 flex-1 flex flex-col lg:flex-row p-8 md:p-12 lg:py-16 w-full gap-12">
+                    
+                    {/* Left: Typography */}
+                    <div className="flex-1 flex flex-col justify-center animate-in fade-in slide-in-from-left-8 duration-1000 delay-300">
+                        <div className="mb-4">
+                            <h1 className="text-7xl md:text-[9rem] lg:text-[11rem] font-poppins font-black text-white leading-none tracking-tighter uppercase mb-4 drop-shadow-2xl flex flex-wrap items-baseline">
+                                Contact
+                                <span className="text-3xl md:text-5xl align-super ml-2 text-accent drop-shadow-lg font-serif">®</span>
+                            </h1>
+                            <div className="flex items-center gap-4 text-white/80 max-w-sm pl-4 border-l-2 border-white/30">
+                                <p className="text-sm md:text-base font-medium leading-relaxed">
+                                    We craft futuristic campaigns where physical reach and visual storytelling merge into one seamless flow.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right: Contact Form */}
+                    <div className="w-full lg:w-[450px] flex flex-col justify-center animate-in fade-in slide-in-from-right-8 duration-1000 delay-500">
+                        <Suspense fallback={<div className="text-white animate-pulse">Loading contact details...</div>}>
+                            <ContactForm />
+                        </Suspense>
+                    </div>
+
                 </div>
-
-                <Suspense fallback={<div className="text-center text-gray-500 py-20">Loading form...</div>}>
-                    <ContactForm />
-                </Suspense>
             </div>
         </div>
     );
