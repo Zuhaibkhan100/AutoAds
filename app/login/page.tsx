@@ -24,7 +24,7 @@ export default function LoginPage() {
             const now = new Date();
             const min = now.getMinutes();
             const sec = now.getSeconds();
-            const pad = (n) => String(n).padStart(2, '0');
+            const pad = (n: number) => String(n).padStart(2, '0');
             if (timeRef.current) {
                 timeRef.current.textContent = `${pad(now.getHours())}:${pad(min)}:${pad(sec)}`;
             }
